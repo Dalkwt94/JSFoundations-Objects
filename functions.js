@@ -33,13 +33,15 @@ function numberOfVideos(channel) {
  * BONUS: use iteration method `.some()`
  ****************************************************************/
 function channelHasVideo(videoTitle, channel) {
-  Object.keys(channel.videos.title).forEach(function (key) {
+  return channel.videos.some((video) => video.title === videoTitle);
+
+  /*Object.keys(channel.videos.title).forEach(function (key) {
     if (videoTitle === channel.videos.title) {
       return true;
     } else {
       return false;
     }
-  });
+  });*/
 }
 
 /**************************************************************
@@ -50,9 +52,9 @@ function channelHasVideo(videoTitle, channel) {
  *
  * BONUS: use iteration method `.find()`
  ****************************************************************/
-/*function getChannelByName(channelName, channels) {
-  
-}*/
+function getChannelByName(channelName, channels) {
+  return channels.find((channel) => channel.name === channelName);
+}
 
 /**************************************************************
  * getChannelByVideoTitle(videoTitle, channels):
@@ -62,9 +64,11 @@ function channelHasVideo(videoTitle, channel) {
  *
  * BONUS: use iteration methods `.find()` and `.some()`
  ****************************************************************/
-/*function getChannelByVideoTitle(videoTitle, channels) {
-  // Your code here
-}*/
+function getChannelByVideoTitle(videoTitle, channels) {
+  return channels.find((channel) =>
+    channel.videos.some((video) => video.title === videoTitle)
+  );
+}
 
 /**************************************************************
  * searchChannels(query, channels):
@@ -74,9 +78,12 @@ function channelHasVideo(videoTitle, channel) {
  *
  * Hint: use string method `.includes()` and iteration method `.filter()`
  ****************************************************************/
-/*function searchChannels(query, channels) {
-  // Your code here
-}*/
+function searchChannels(query, channels) {
+  return channels.filter(
+    (channel) =>
+      channel.name.includes(query) || channel.description.includes(query)
+  );
+}
 
 /**************************************************************
  * totalVideosDuration(channel):
@@ -85,9 +92,12 @@ function channelHasVideo(videoTitle, channel) {
  *
  * BONUS: use iteration method `.reduce()`
  ****************************************************************/
-/*function totalVideosDuration(channel) {
-  // Your code here
-}*/
+function totalVideosDuration(channel) {
+  return channel.videos.reduce(
+    (totalDuration, video) => totalDuration + video.duration,
+    0
+  );
+}
 
 /**************************************************************
  * channelWithMostContent(channels):
@@ -97,9 +107,16 @@ function channelHasVideo(videoTitle, channel) {
  * Hint: use the `totalVideosDuration()` function
  * BONUS: use iteration method `.sort()`
  ****************************************************************/
-/*function channelWithMostContent(channels) {
-  // Your code here
-}*/
+function channelWithMostContent(channels) {
+  let mostContentChannel = channels[0];
+
+  channels.forEach((channel) => {
+    if (totalVideosDuration(channel) > totalVideosDuration(mostContentChannel))
+      mostContentChannel = channel;
+  });
+
+  return mostContentChannel;
+}
 
 /**************************************************************
  * longestChannelName(channels):
@@ -108,18 +125,25 @@ function channelHasVideo(videoTitle, channel) {
  *
  * BONUS: use iteration method `.sort()`
  ****************************************************************/
-/*function longestChannelName(channels) {
-  // Your code here
-}*/
+function longestChannelName(channels) {
+  let channelWithLongestName = channels[0];
+
+  channels.forEach((channel) => {
+    if (channel.name.length > channelWithLongestName.name.length)
+      channelWithLongestName = channel;
+  });
+
+  return channelWithLongestName;
+}
 
 module.exports = {
   getChannelName,
   numberOfVideos,
   channelHasVideo,
-  /*getChannelByName,
+  getChannelByName,
   getChannelByVideoTitle,
   searchChannels,
   totalVideosDuration,
   channelWithMostContent,
-  longestChannelName,*/
+  longestChannelName,
 };
